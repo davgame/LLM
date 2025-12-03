@@ -1,42 +1,28 @@
 # LLM
-<<<<<<< HEAD
 
-This template should help get you started developing with Vue 3 in Vite.
-
-## Recommended IDE Setup
-
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
+## Для успешного тестирования qwen2.5:7b
+Powershell
 ```sh
-npm install
+ollama pull qwen2.5:7b
 ```
+далее
+```sh
+ollama serve
+```
+далее:запуск и тестирование сервера Fast API с корня, не переходя в /src
+```sh
+uvicorn src.server:app --reload --port 3001
+```
+Хостинг Fast API
+http://localhost:3001/docs
 
-### Compile and Hot-Reload for Development
+
+### Compile и хоолодный запуск фронта
 
 ```sh
 npm run dev
 ```
+спланирую запустить модель на фронте и протестировать
 
-### Compile and Minify for Production
+Языковая модель для рекомендательной системы qwen2.5:7b
 
-```sh
-npm run build
-```
-=======
-Языковая модель для рекомендательной системы
->>>>>>> f48a25a38d1f30ce0bdc4d15cf637aa1eb8c2433
