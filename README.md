@@ -1,4 +1,5 @@
 # LLM
+<<<<<<< HEAD
 
 This template should help get you started developing with Vue 3 in Vite.
 
@@ -36,3 +37,6 @@ npm run dev
 ```sh
 npm run build
 ```
+=======
+Языковая модель для рекомендательной системы
+>>>>>>> f48a25a38d1f30ce0bdc4d15cf637aa1eb8c2433
