@@ -50,7 +50,7 @@
 Языковая модель для рекомендательной системы qwen2.5:7b
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/davgame/LLM/main/assets/images/banner.png" 
+  <img src="https://github.com/davgame/LLM/blob/main/src/assets/images/banner.png"
        alt="Генератор названий проектов" 
        width="100%">
 </p>
