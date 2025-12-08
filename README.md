@@ -49,5 +49,9 @@
 ```
 Языковая модель для рекомендательной системы qwen2.5:7b
 
-![Project Preview](https://cdn.jsdelivr.net/gh/davgame/LLM/assets/images/banner.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/davgame/LLM/main/assets/images/banner.png" 
+       alt="Генератор названий проектов" 
+       width="100%">
+</p>
 
