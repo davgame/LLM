@@ -6,6 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
+  root: '', // Явно указываем корневую папку
   plugins: [
     vue(),
     tailwindcss(),

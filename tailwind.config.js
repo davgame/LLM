@@ -21,6 +21,7 @@ module.exports = {
     }
   },
   plugins: [
-    require('flowbite/plugin') // подключаем плагин Flowbite
+    require('flowbite/plugin'), // подключаем плагин Flowbite
+    require('tailwind-scrollbar')
   ],
 }
