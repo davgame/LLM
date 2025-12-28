@@ -4,7 +4,7 @@
     <h1 class="lg:text-5xl text-[33px] font-bold lg:mb-12 mb-8">Новый проект<span class="text-[#222222]"></span></h1>
 
     <!-- Поле ввода -->
-     <div class="items-center justify-between px-6 sm:px-4 md:px-[100px]">
+     <div class="items-center justify-between  lg:px-[100px]">
     <div class="relative lg:w-[480px] mb-6 align-items justify-center">
       <textarea
         ref="textarea"
