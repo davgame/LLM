@@ -1,6 +1,13 @@
 import torch
 import yaml
+import random
+import numpy as np
 
+torch.manual_seed(42)
+random.seed(42)
+np.random.seed(42)
+
+from transformers import DataCollatorForLanguageModeling
 from datasets import load_dataset
 from transformers import (
     AutoTokenizer,
@@ -8,7 +15,9 @@ from transformers import (
     TrainingArguments,
     Trainer,
     BitsAndBytesConfig
+
 )
+
 
 from peft import (
     LoraConfig,
@@ -75,6 +84,9 @@ model = AutoModelForCausalLM.from_pretrained(
 
 model = prepare_model_for_kbit_training(model)
 
+model.gradient_checkpointing_enable()
+model.config.use_cache = False
+
 
 # =========================
 # LoRA config
@@ -132,8 +144,8 @@ def tokenize(batch):
     return tokenizer(
         batch["text"],
         truncation=True,
-        padding="max_length",
-        max_length=512
+        padding=False,
+        max_length=128
     )
 
 
@@ -164,19 +176,25 @@ args = TrainingArguments(
 
 
 # =========================
-# Trainer
+# Data collator
 # =========================
 
-trainer = Trainer(
-    model=model,
-    args=args,
-    train_dataset=dataset["train"],
+data_collator = DataCollatorForLanguageModeling(
+    tokenizer=tokenizer,
+    mlm=False
 )
 
 
 # =========================
 # Train
 # =========================
+
+trainer = Trainer(
+    model=model,
+    args=args,
+    train_dataset=dataset["train"],
+    data_collator=data_collator
+)
 
 trainer.train()
 
