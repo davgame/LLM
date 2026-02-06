@@ -79,6 +79,7 @@ model = AutoModelForCausalLM.from_pretrained(
     MODEL_NAME,
     quantization_config=bnb_config,
     device_map="auto",
+    torch_dtype=torch.float16,
     trust_remote_code=True
 )
 
@@ -145,7 +146,7 @@ def tokenize(batch):
         batch["text"],
         truncation=True,
         padding=False,
-        max_length=128
+        max_length=96
     )
 
 
@@ -167,6 +168,7 @@ args = TrainingArguments(
     learning_rate=cfg["train"]["learning_rate"],
     num_train_epochs=cfg["train"]["num_train_epochs"],
     fp16=cfg["train"]["fp16"],
+    bf16=False,
     logging_steps=cfg["train"]["logging_steps"],
     save_strategy=cfg["train"]["save_strategy"],
     save_total_limit=cfg["train"]["save_total_limit"],
