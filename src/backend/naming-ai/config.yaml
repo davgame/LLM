@@ -12,6 +12,7 @@ train:
   save_strategy: epoch
   save_total_limit: 2
   report_to: none
+  Hardware accelerator: GPU
 
 lora:
   r: 16
