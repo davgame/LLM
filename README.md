@@ -49,6 +49,10 @@
 ```
 Языковая модель для рекомендательной системы qwen2.5:7b
 
+КАК ЗАПУСТИТЬ ОБУЧЕНИЕ LoRa-адаптера:
+1.Переходим ```cd src/backend```
+2.Запускаем файл train.py
+
 <p align="center">
   <img src="https://github.com/davgame/LLM/blob/main/src/assets/images/banner.png"
        alt="Генератор названий проектов" 
