@@ -57,7 +57,7 @@
 
 ПОСЛЕ ОБУЧЕНИЯ:
 1. Появится папка ```./qwen-lora-adapter/latest/``` с файлом ```adapter_model.bin``` (это LoRA-адаптер)
-2. Создание единой модели qwen 2.7 + LoRa: ```ollama create my-naming-model -f Modelfile```
+2. Создайте единую модель qwen 2.7 + LoRa командой: ```ollama create my-naming-model -f Modelfile```
 3. Запуск сервера ```server.py```
 
 ПРОВЕРКА:
