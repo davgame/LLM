@@ -65,7 +65,7 @@
 - Должны увидеть: adapter_model.bin
 2. После создания единой модели qwen 2.7 + LoRa: ```ollama list```
 - Должны увидеть: my-naming-model:latest
-3. После запуска server.py откройте браузер и введите:http://localhost:3001/docs
+3. После запуска server.py откройте браузер и введите: http://localhost:3001/docs
 
 <p align="center">
   <img src="https://github.com/davgame/LLM/blob/main/src/assets/images/banner.png"
