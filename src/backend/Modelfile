@@ -1,0 +1,4 @@
+FROM qwen2.5:7b
+ADAPTER ./qwen-lora-adapter/latest/adapter_model.bin
+PARAMETER temperature 0.7
+PARAMETER top_p 0.9

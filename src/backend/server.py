@@ -264,7 +264,7 @@ async def generate_names(req: NameRequest):
 async def root():
     return {
         "message": "Генератор названий проектов",
-        "model": "Qwen2.5:7b",
+        "model": "my-naming-model",  #Объединенная модель Qwen 2.5 7b + LoRa-адаптер
         "status": "работает",
         "docs": "/docs"
     }

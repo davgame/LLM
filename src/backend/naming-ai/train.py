@@ -24,6 +24,26 @@ from peft import (
     prepare_model_for_kbit_training
 )
 
+# Добавьте в начало файла после импортов проверку формата данных
+def inspect_dataset():
+    """Проверка структуры dataset"""
+    import json
+    
+    with open("train_llm.jsonl", "r") as f:
+        first_line = f.readline().strip()
+        sample = json.loads(first_line)
+        print("📊 Структура данных:", json.dumps(sample, indent=2, ensure_ascii=False))
+    
+    # Проверяем количество примеров
+    with open("train_llm.jsonl", "r") as f:
+        lines = f.readlines()
+        print(f"📈 Всего примеров: {len(lines)}")
+    
+    return sample
+
+# Вызовите эту функцию перед загрузкой датасета
+sample_data = inspect_dataset()
+
 
 # =========================
 # Load config
@@ -42,7 +62,7 @@ OUTPUT_DIR = cfg["output_dir"]
 
 dataset = load_dataset(
     "json",
-    data_files="train.jsonl"
+    data_files="train_llm.jsonl"
 )
 
 
@@ -111,26 +131,20 @@ model.print_trainable_parameters()
 # =========================
 
 def format_sample(sample):
-
+    """Форматирует сообщения в промпт для обучения"""
     messages = sample["messages"]
-
-    text = ""
-
+    
+    prompt = ""
+    
     for m in messages:
         role = m["role"]
         content = m["content"]
-
-        if role == "system":
-            text += f"<|system|>{content}\n"
-        elif role == "user":
-            text += f"<|user|>{content}\n"
-        elif role == "assistant":
-            text += f"<|assistant|>{content}\n"
-
-    text += "<|end|>"
-
-    return {"text": text}
-
+        
+        # Используем формат Qwen
+        prompt += f"<|im_start|>{role}\n{content}<|im_end|>\n"
+    
+    #Не добавляем лишний assistant в конце
+    return {"text": prompt}
 
 dataset = dataset.map(format_sample)
 
@@ -145,7 +159,7 @@ def tokenize(batch):
         batch["text"],
         truncation=True,
         padding=False,
-        max_length=96
+        max_length=cfg["train"]["max_length"]  # ✅ Берем из config
     )
 
 
