@@ -51,7 +51,7 @@
 
 КАК ЗАПУСТИТЬ ОБУЧЕНИЕ LoRa-АДАПТЕРА:
 1. Переходим ```cd src/backend```
-2. # Установите зависимости (если ещё не установлены)
+2. Установите зависимости (если ещё не установлены)
    ```pip install torch transformers datasets peft accelerate bitsandbytes```
 3. Запускаем файл ```train.py``` (создает адаптер)
 
@@ -62,9 +62,9 @@
 
 ПРОВЕРКА:
 1. После выполнения train.py: ls ```qwen-lora-adapter/latest/```
-# Должны увидеть: adapter_model.bin
+- Должны увидеть: adapter_model.bin
 2. После создания единой модели qwen 2.7 + LoRa: ```ollama list```
-# Должны увидеть: my-naming-model:latest
+- Должны увидеть: my-naming-model:latest
 3. После запуска server.py откройте браузер и введите:```http://localhost:3001/docs```
 
 <p align="center">
