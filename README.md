@@ -50,8 +50,22 @@
 Языковая модель для рекомендательной системы qwen2.5:7b
 
 КАК ЗАПУСТИТЬ ОБУЧЕНИЕ LoRa-АДАПТЕРА:
-1.Переходим ```cd src/backend```
-2.Запускаем файл train.py
+1. Переходим ```cd src/backend```
+2. # Установите зависимости (если ещё не установлены)
+   ```pip install torch transformers datasets peft accelerate bitsandbytes```
+3. Запускаем файл ```train.py``` (создает адаптер)
+
+ПОСЛЕ ОБУЧЕНИЯ:
+1. Появится папка ```./qwen-lora-adapter/latest/``` с файлом ```adapter_model.bin``` (это LoRA-адаптер)
+2. Создание единой модели qwen 2.7 + LoRa: ```ollama create my-naming-model -f Modelfile```
+3. Запуск сервера ```server.py```
+
+ПРОВЕРКА:
+1. После выполнения train.py: ls ```qwen-lora-adapter/latest/```
+# Должны увидеть: adapter_model.bin
+2. После создания единой модели qwen 2.7 + LoRa: ```ollama list```
+# Должны увидеть: my-naming-model:latest
+3. После запуска server.py откройте браузер и введите:```http://localhost:3001/docs```
 
 <p align="center">
   <img src="https://github.com/davgame/LLM/blob/main/src/assets/images/banner.png"
