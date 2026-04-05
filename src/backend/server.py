@@ -64,36 +64,72 @@ class NameRequest(BaseModel):
 
 def build_prompt(text: str, smart_mood: bool) -> str:
     if smart_mood:
-        return (
-            f"Ты профессиональный нейминг-специалист. Придумай 5 современных, технологичных и стильных русских названий для IT-проекта на тему: '{text}'.\n\n"
-            "ТРЕБОВАНИЯ К НАЗВАНИЯМ:\n"
-            "1. МАКСИМУМ 2 слова\n"
-            "2. Названия должны звучать современно, технологично и профессионально\n"
-            "3. Можно использовать английские слова в транслитерации или сочетания с русскими\n"
-            "4. Избегай фентези-метафор, сказочных и поэтических образов\n"
-            "5. Названия должны подходить для мобильного приложения, SaaS-платформы или IT-стартапа\n\n"
-            "ПРИМЕРЫ ХОРОШИХ ТЕХНОЛОГИЧНЫХ НАЗВАНИЙ:\n"
-            "- Travel Mind\n"
-            "- Trip Genius\n"
-            "- Умные Маршруты\n"
-            "- Цифровой Гид\n"
-            "- Пространство Путешествий\n\n"
-            "НЕПОДХОДЯЩИЕ СТИЛИ:\n"
-            "- Фентези (Эльфы, Драконы, Магия)\n"
-            "- Поэзия (Шёпот Ветра, Сад Тайн)\n"
-            "- Слишком абстрактные метафоры\n\n"
-            "ФОРМАТ ОТВЕТА:\n"
-            "Только 5 названий, каждое на новой строке, без номеров и точек."
-        )
+        return f"""
+ЗАДАЧА:
+Сгенерируй 5 названий для IT-проекта.
+
+ТЕМА:
+{text}
+
+ЖЁСТКИЕ ТРЕБОВАНИЯ:
+- Только русский язык
+- Запрещены английские слова, латиница и транслитерация
+- Максимум 2 слова в названии
+- Современный, технологичный стиль
+- Подходит для стартапа, SaaS или приложения
+- Без метафор, поэзии и абстракций
+
+ФОРМАТ ОТВЕТА:
+- Ровно 5 строк
+- Без нумерации
+- Без пояснений
+- Только названия
+
+ПРИМЕРЫ:
+
+Вход: путешествия
+Выход:
+Умные Маршруты
+Цифровой Гид
+Планер Поездок
+Карта Путей
+Сервис Поездок
+
+Вход: задачи
+Выход:
+Менеджер Задач
+Планировщик Дел
+Контроль Задач
+Список Дел
+Трекер Задач
+
+СГЕНЕРИРУЙ:
+
+Вход: {text}
+Выход:
+"""
     else:
-        return (
-            f"Придумай 5 простых, понятных и практичных русских названий для IT-проекта на тему: '{text}'.\n"
-            "ТРЕБОВАНИЯ:\n"
-            "- Максимум 2 слова в названии\n"
-            "- Короткие и ясные названия\n"
-            "- Отражают суть проекта\n"
-            "Формат: только названия, каждое на новой строке."
-        )
+        return f"""
+ЗАДАЧА:
+Придумай 5 названий для проекта.
+
+ТЕМА:
+{text}
+
+ТРЕБОВАНИЯ:
+- Только русский язык
+- Максимум 2 слова
+- Простые и понятные названия
+- Отражают суть проекта
+
+ФОРМАТ:
+- 5 строк
+- Без пояснений
+- Без нумерации
+
+Вход: {text}
+Выход:
+"""
 
 def parse_llm_response(response_text: str) -> list:
     """Очищает ответ от модели и извлекает названия"""
@@ -106,13 +142,14 @@ def parse_llm_response(response_text: str) -> list:
     for line in lines:
         line = line.strip()
         
-        # Пропускаем строки, которые выглядят как комментарии
-        if any(x in line.lower() for x in ['пример', 'например', 'как:', 'также', 'можно']):
-            continue
-        
-        # Убираем нумерацию и маркеры
+        # убираем нумерацию
         line = re.sub(r'^[0-9]+[\.\)\-\:\s]*', '', line)
+
+        # убираем маркеры
         line = re.sub(r'^[\-\*\•\>\s]+', '', line)
+
+        # потом чистим символы
+        line = re.sub(r'[^\w\s\-А-Яа-яЁё0-9]', '', line)
         
         # Убираем кавычки и лишние пробелы
         line = line.strip('"\'«»')
@@ -134,6 +171,9 @@ def filter_by_word_count(names: list, max_words: int = 2) -> list:
             filtered.append(name)
     return filtered
 
+def is_russian(text: str) -> bool:
+    return bool(re.search(r'[А-Яа-яЁё]', text))
+
 def improve_names_quality(names: list, smart_mood: bool) -> list:
     """Улучшает качество сгенерированных названий"""
     improved = []
@@ -141,7 +181,7 @@ def improve_names_quality(names: list, smart_mood: bool) -> list:
         name = name.strip()
         
         # Убираем только действительно странные символы, но сохраняем нормальные
-        name = re.sub(r'[^\w\s\-А-Яа-яЁё]', '', name)
+        name = re.sub(r'[^\w\s\-А-Яа-яЁё0-9]', '', name)
         
         # Для Smart Mode: исправляем слипшиеся слова
         if smart_mood:
@@ -167,88 +207,79 @@ def improve_names_quality(names: list, smart_mood: bool) -> list:
     
     return unique_improved[:5]
 
+def score_name(name):
+    score = 0
+    if len(name.split()) == 2:
+        score += 2
+    if len(name) < 20:
+        score += 1
+    if name[0].isupper():
+        score += 1
+    return score
+
 def generate_high_quality_fallback(text: str, smart_mood: bool) -> list:
-    """Качественные fallback-названия (максимум 2 слова)"""
-    if smart_mood:
-        # Только 1-2 слова
-        templates = [
-            "Горизонт Мечты",
-            "Шёпот Ветра",
-            "Карта Судьбы",
-            "Путь Звёзд",
-            "Сад Тайн",
-            "Мост Мечты",
-            "Река Времени",
-            "Окно В Мир",
-            "Ветер Перемен",
-            "Свет Пути"
-        ]
-        # Адаптируем под тему
-        result = []
-        for i, template in enumerate(templates[:5]):
-            # Немного адаптируем под тему, если это уместно
-            if i == 0:
-                result.append(f"Горизонт {text}")
-            elif i == 1:
-                result.append(f"Шёпот {text}а")
-            elif i == 2:
-                result.append(f"Карта {text}а")
-            elif i == 3:
-                result.append(f"Путь {text}а")
-            else:
-                result.append(f"Сад {text}ов")
-        return result
-    else:
-        # Простые варианты (1-2 слова)
-        return [
-            f"Проект {text}",
-            f"Мир {text}а",
-            f"Карта {text}а",
-            f"Путь {text}а",
-            f"Система {text}"
-        ]
+    base = text.capitalize()
+    return [
+        f"{base} Платформа",
+        f"{base} Сервис",
+        f"{base} Система",
+        f"{base} Решения",
+        f"{base} Центр"
+    ]
 
 @lru_cache(maxsize=100)
 def generate_names_cached(text: str, smart_mood: bool) -> list:
     """Кэшированная генерация названий с улучшенным качеством"""
+    
     prompt = build_prompt(text, smart_mood)
+
     try:
         resp = requests.post(
             "http://localhost:11434/api/generate",
             json={
                 "model": "qwen2.5:7b",
                 "prompt": prompt,
-                "max_tokens": 120,
-                "temperature": 0.7 if smart_mood else 0.4,
-                "top_p": 0.9,
+                "max_tokens": 200,
+                "temperature": 0.4,
+                "top_p": 0.8,
+                "repeat_penalty": 1.2,
                 "stream": False
             },
             timeout=30
         )
         resp.raise_for_status()
+        data = resp.json()
+        raw_response = data.get("response", "").strip()
+        print("RAW FROM MODEL:", raw_response)
+
     except requests.RequestException:
-        fallback_names = generate_high_quality_fallback(text, smart_mood)
-        # Фильтруем fallback-названия тоже по количеству слов
-        return filter_by_word_count(fallback_names, max_words=2)[:5]
-    
-    data = resp.json()
-    raw_response = data.get("response", "")
+        # если ошибка запроса → fallback
+        fallback = generate_high_quality_fallback(text, smart_mood)
+        return filter_by_word_count(fallback, max_words=2)[:5]
+
+    # ❗ если модель ничего не вернула
+    if not raw_response:
+        fallback = generate_high_quality_fallback(text, smart_mood)
+        return filter_by_word_count(fallback, max_words=2)[:5]
+
+    # ✅ парсим
     names = parse_llm_response(raw_response)
-    
-    # Улучшаем качество названий
+
+    # ✅ улучшаем
     names = improve_names_quality(names, smart_mood)
-    
-    # Фильтруем по количеству слов (максимум 2)
+
+    # ✅ фильтр по словам
     names = filter_by_word_count(names, max_words=2)
-    
-    # Если мало хороших названий, добавляем fallback
-    if len(names) < 3:
+
+    names = [n for n in names if is_russian(n)]
+    names = sorted(names, key=score_name, reverse=True)
+
+    # ❗ если мало нормальных
+    if len(names) < 5:
         fallback = generate_high_quality_fallback(text, smart_mood)
         fallback = filter_by_word_count(fallback, max_words=2)
-        # Объединяем, избегая дубликатов
-        all_names = names + [n for n in fallback if n not in names]
-        names = all_names[:5]
-    
+        names = list(dict.fromkeys(names + fallback))
+
     return names[:5]
 
 @app.get("/api/test")

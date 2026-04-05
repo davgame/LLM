@@ -122,7 +122,6 @@
               <p class="font-medium text-[#32383E]">{{ suggestion }}</p>
               
             </div>
-            
           </div>
         </div>
       </div>
@@ -241,15 +240,6 @@ const fetchSuggestions = async () => {
     console.error('❌ Ошибка:', err)
     error.value = err.message
     
-    // Fallback данные для демонстрации
-    suggestions.value = [
-      'Планета Задач',
-      'Калейдоскоп Целей',
-      'Мост Достижений',
-      'Дневник Вдохновения',
-      'Гармошка Приоритетов'
-    ]
-    
   } finally {
     loading.value = false
   }
@@ -271,7 +261,4 @@ const selectSuggestion = (suggestion) => {
 onUnmounted(() => {
   clearTimeout(inputTimer)
 })
-
-// Автоматически загружаем пример при открытии
-//fetchSuggestions()
 </script>

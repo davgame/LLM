@@ -12,7 +12,7 @@
       <div class="ml-auto flex items-center gap-2">
         <a
           href="#"
-          class="desktop-button mr-[3px] text-black focus:ring-4 focus:ring-blue-300 font-rubik font-medium rounded-[10px] border-1 text-sm px-[35px] py-2.5 focus:outline-none border-[#9A9A9A]/20 hover:bg-gray-100"
+          class="desktop-button mr-[3px] text-black focus:ring-4 focus:ring-blue-300 font-rubik font-medium rounded-[10px] text-sm px-[35px] py-2.5 focus:outline-none border-[#9A9A9A]/20 hover:bg-gray-100"
         >
           Войти
         </a>
@@ -26,7 +26,7 @@
       <button
         @click="isOpen = !isOpen"
         type="button"
-        class="cursor-pointer inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-[#111827] border-1 border-[#9A9A9A]/20 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+        class="cursor-pointer inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-[#111827] border-[#9A9A9A]/20 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
         aria-controls="navbar-hamburger"
         aria-expanded="false"
       >
@@ -72,7 +72,7 @@
         <div class="ml-auto flex gap-2">
           <a
             href="#"
-            class="desktop-button mr-[3px] text-white focus:ring-4 focus:ring-blue-300 font-rubik font-medium rounded-[10px] border-1 text-sm px-[35px] py-2.5 focus:outline-none border-white"
+            class="desktop-button mr-[3px] text-white focus:ring-4 focus:ring-blue-300 font-rubik font-medium rounded-[10px] text-sm px-[35px] py-2.5 focus:outline-none border-white"
           >
             Войти
           </a>
@@ -92,7 +92,7 @@
       </div>
 
       <div class="container mx-auto">
-        <div class="w-full h-[1px]  bg-gray-100 my-1 max-w-[calc(100%-3rem)] lg:max-w-[calc(100%-1rem)] mx-auto"></div>
+        <div class="w-full h-full  bg-gray-100 my-1 max-w-[calc(100%-3rem)] lg:max-w-[calc(100%-1rem)] mx-auto"></div>
       </div>
       <!--Инноваторы продукт СНО-->
       <div class="flex items-start justify-start m-2 flex-1 sm:flex-none sm:justify-start sm:pl-4">
